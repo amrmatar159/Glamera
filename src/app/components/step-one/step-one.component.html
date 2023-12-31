@@ -1,0 +1,148 @@
+<ng-container #verificationCodeDialogContainer></ng-container>
+<div class="container-fluid position-relative">
+  <div class="text-end text-body-tertiary position-absolute p-4" style="top: 0; right: 0; z-index: 1;">
+    Having troubles? <a href="#" class="text-primary fw-bolder">Get Help</a>
+  </div>
+  <div class="row main-container">
+    <div class="col-lg-4 p-0 position-relative">
+      <img src="assets/img/lady.jpg" class="img-fluid img-cover" />
+      <div class="over-img position-absolute w-100 h-100"></div>
+      <div class="quotes">
+        <div id="quotes-slider" class="carousel slide position-relative carousel-dark" data-bs-ride="carousel">
+          <img src="assets/img/quote-mark.svg" class="qoute-mark" />
+          <div class="carousel-indicators mb-0">
+            <button *ngFor="let qoute of quotes; let i = index" type="button" data-bs-target="#quotes-slider"
+              [attr.data-bs-slide-to]="i" [ngClass]="{active: i === 0}"></button>
+          </div>
+          <div class="carousel-inner overflow-hidden p-4">
+            <div *ngFor="let qoute of quotes; let i = index" class="carousel-item" [ngClass]="{active: i === 0}">
+              <div class="carousel-caption position-static p-0 text-start text-secondary">
+                <p>
+                  {{ qoute.content }}
+                </p>
+                <div class="h4 mb-0">{{ qoute.auther }}</div>
+                <div class="text-sm text-body-tertiary">{{ qoute.autherTitle }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 p-lg-5 pe-lg-2 p-xl-5">
+      <div class="p-0 py-5 px-3 pt-lg-5 ps-lg-5">
+        <div class="row ms-xl-5 p-xl-5">
+          <div class="col-12 mb-5">
+            <div class="h2 text-secondary">Start your <span>business</span> now</div>
+            <div class="text-secondary">
+              Creating your company is just a few steps away,
+              <br />
+              Enter your email address to continue.
+            </div>
+          </div>
+          <div class="pe-xl-5">
+            <form class="form-inputs position-relative row me-xl-5" (submit)="submit()" [formGroup]="stepOneForm">
+              <ng-container *ngIf="sendingCode">
+                <div class="position-absolute w-100 h-100 bg-dark opacity-25 rounded" style="z-index: 10;"></div>
+                <div class="position-absolute d-flex justify-content-center align-items-center w-100 h-100"
+                  style="z-index: 10; cursor: not-allowed">
+                  <app-spinner></app-spinner>
+                </div>
+              </ng-container>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="first_name" class="form-label text-secondary">First Name</label>
+                  <input type="text" class="form-control form-control-xl" id="first_name"
+                    [ngClass]="{'border-danger': hasError('first_name', 'pattern')}" formControlName="first_name"
+                    placeholder="Enter your first name" />
+                  <div *ngIf="hasError('first_name', 'pattern')" class="text-danger text-xs text-end mt-1">
+                    Please enter letters only
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="last_name" class="form-label text-secondary">Last Name</label>
+                  <input type="text" class="form-control form-control-xl" id="last_name"
+                    [ngClass]="{'border-danger': hasError('last_name', 'pattern')}" formControlName="last_name"
+                    placeholder="Enter your last name" />
+                  <div *ngIf="hasError('last_name', 'pattern')" class="text-danger text-xs text-end mt-1">
+                    Please enter letters only
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="email" class="form-label text-secondary">Email Address</label>
+                  <input type="email" class="form-control form-control-xl" id="email" placeholder="Enter your email"
+                    [ngClass]="{'border-danger': hasError('email', 'email')}" formControlName="email" />
+                  <div *ngIf="hasError('email', 'email')" class="text-danger text-xs text-end mt-1">
+                    Please enter a valid email address
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="phone" class="form-label text-secondary">Phone Number</label>
+                  <div class="input-group">
+                    <span class="input-group-text text-xs">
+                      <img src="assets/img/sa.png" class="phone-label pe-2" />
+                      +966
+                    </span>
+                    <input type="text" id="phone" class="form-control form-control-xl" placeholder="Enter your phone"
+                      [ngClass]="{'border-danger': hasError('phone', 'pattern')}" formControlName="phone" />
+                  </div>
+                  <div *ngIf="hasError('phone', 'pattern')" class="text-danger text-xs text-end mt-1">
+                    Please enter a valid phone number
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="password" class="form-label text-secondary">Password</label>
+                  <div class="input-group position-relative">
+                    <input [type]="isShownPassword ? 'text' : 'password'"
+                      class="form-control form-control-xl rounded pe-5" id="password" placeholder="Enter your Password"
+                      [ngClass]="{'border-danger': hasError('password', 'pattern')}" formControlName="password" />
+                    <span class="show-password position-absolute end-0 me-3 top-50"
+                      (click)="isShownPassword = !isShownPassword">
+                      <i class="far" [ngClass]="isShownPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+                    </span>
+                  </div>
+                  <div *ngIf="hasError('password', 'pattern')" class="text-danger text-xs text-end mt-1">
+                    Please enter 8 degits of A,a,12,!@
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6"></div>
+              <div class="col-md-6">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="agreement"
+                    [ngClass]="{'border-danger': hasError('policy_agreement', 'pattern')}"
+                    formControlName="policy_agreement" />
+                  <label class="form-check-label" for="agreement">
+                    Agree to the
+                    <a href="#" class="link-info">Privacy Policy</a>
+                    and
+                    <a href="#" class="link-info">Terms & Conditions</a>
+                  </label>
+                  <div *ngIf="hasError('policy_agreement', 'pattern')" class="text-danger text-xs text-end mt-1">
+                    Agreement is Required
+                  </div>
+                </div>
+              </div>
+              <div class="offset-md-3 col-md-3 offset-lg-2 col-lg-4 offset-xl-3 col-xl-3 text-end">
+                <div class="d-grid" style="min-height: 100%;">
+                  <button type="submit" class="btn btn-primary block mb-3">
+                    <span class="float-start">NEXT</span>
+                    <span class="ms-2 float-end">
+                      <i class="fas fa-long-arrow-alt-right"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

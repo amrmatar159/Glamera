@@ -1,0 +1,42 @@
+<div
+  class="position-fixed vw-100 vh-100 d-flex justify-content-center align-items-center verification-bg p-3 overflow-y-scroll">
+  <form [formGroup]="verificationForm" (submit)="submit()"
+    class="rounded bg-white verification-container position-relative p-3">
+    <ng-container *ngIf="isCheckingCode">
+      <div class="position-absolute w-100 h-100 bg-dark opacity-25 rounded" style="top: 0; left: 0; z-index: 10;"></div>
+      <div class="position-absolute d-flex justify-content-center align-items-center w-100 h-100"
+        style="top: 0; left: 0; z-index: 10; cursor: not-allowed">
+        <app-spinner></app-spinner>
+      </div>
+    </ng-container>
+    <span class="position-absolute">
+      <span class="close-btn" (click)="close.next(true)">
+        <i class="fa fa-xmark"></i>
+      </span>
+    </span>
+    <img src="assets/img/mail-box.svg" class="img d-block m-auto mt-5 mb-4 pb-2" />
+    <div class="px-3 text-center">
+      <div class="h4 text-secondary fw-semibold">Verification Code</div>
+      <div class="text-body-tertiary mb-5">
+        Please enter the verification code sent to your phone number {{ phoneNumber.slice(0, 2) }}**{{ phoneNumber.slice(-2) }}
+      </div>
+      <div class="row mb-4 pb-2">
+        <div class="col-3" *ngFor="let control of verificationForm.get('code')?.controls; let i = index"
+          formArrayName="code">
+          <input type="text" class="form-control form-control-xl text-center" [formControlName]="i" maxlength="1"
+            [ngClass]="{'border-danger': (validationChecked || control.touched )&& control.invalid}" #input />
+        </div>
+      </div>
+      <div class="text-body-tertiary mb-4 pb-3">
+        The code will be sent again within
+        <span class="text-info fw-semibold">{{ countDown }}</span>
+        seconds
+      </div>
+    </div>
+    <div class="row">
+      <div class="offset-3 col-6">
+        <button #submitButton type="submit" class="btn btn-primary py-3 mb-4 w-100">VERIFY</button>
+      </div>
+    </div>
+  </form>
+</div>

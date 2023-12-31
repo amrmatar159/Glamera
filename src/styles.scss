@@ -1,0 +1,56 @@
+@import "variables.scss";
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+
+// Global
+* {
+  font-family: Poppins;
+}
+
+a,
+a:active,
+a:focus,
+a:visited {
+  text-decoration: none;
+}
+
+// custom classes
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.break-keep {
+  word-break: keep-all;
+}
+
+// Bootstrap
+.form-control:focus,
+.form-check-input:focus,
+.form-select:focus {
+  // box-shadow: none;
+}
+
+.form-control::-webkit-input-placeholder {
+  font-size: .75rem;
+}
+
+.form-control:-moz-placeholder {
+  // Firefox 18-
+  font-size: .75rem;
+}
+
+.form-control::-moz-placeholder {
+  // Firefox 19+
+  font-size: .75rem;
+}
+
+.form-control:-ms-input-placeholder {
+  font-size: .75rem;
+}

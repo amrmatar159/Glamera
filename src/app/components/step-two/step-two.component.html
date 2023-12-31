@@ -1,0 +1,146 @@
+<div class="container-fluid position-relative">
+  <div class="text-end text-body-tertiary position-absolute p-4" style="top: 0; right: 0; z-index: 1;">
+    Having troubles? <a href="#" class="text-primary fw-bolder">Get Help</a>
+  </div>
+  <div class="row main-container">
+    <div class="col-lg-4 p-0 position-relative h-100">
+      <img src="assets/img/bg.jpg" class="img-cover" />
+      <div class="m-5 p-5 position-absolute top-0">
+        <img src="assets/img/glamera.svg" class="mb-3" />
+        <div class="h2 fw-semibold text-white mt-5 pt-5">
+          Few clicks away from creating your business
+        </div>
+        <div class="text-white opacity-75 mt-5 pt-5">
+          Start your business in minutes. save time and money
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 p-lg-5 pe-lg-2 p-xl-5">
+      <div class="p-0 pb-5 px-3 pt-lg-5">
+        <div class="row ms-xl-5 p-xl-2">
+          <div class="col-12 mb-5">
+            <div class="ms-2 pb-5 text-secondary">
+              <a [routerLink]="['', 'step-one']">
+                <i class="fas fa-long-arrow-alt-left"></i>
+              </a>
+            </div>
+            <div class="h2 text-secondary">Choose the type of business</div>
+            <div class="text-secondary">
+              To get start tell us what type of Business you are going to incorporate and name
+            </div>
+          </div>
+          <form [formGroup]="stepTwoForm" (submit)="submit()" class="form-inputs position-relative row pe-xl-5 me-xl-5">
+            <ng-container *ngIf="isSubmiting">
+              <div class="position-absolute w-100 h-100 bg-dark opacity-25 rounded" style="z-index: 10;"></div>
+              <div class="position-absolute d-flex justify-content-center align-items-center w-100 h-100"
+                style="z-index: 10; cursor: not-allowed">
+                <app-spinner></app-spinner>
+              </div>
+            </ng-container>
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="business_name" class="form-label text-secondary text-sm">Business Name</label>
+                <input type="text" class="form-control form-control-xl" id="business_name"
+                  [ngClass]="{'border-danger': hasError('business_name')}" formControlName="business_name"
+                  placeholder="Enter business name" />
+                <div *ngIf="hasError('business_name')" class="text-danger text-xs text-end mt-1">Business name is
+                  required</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="business_type" class="form-label text-secondary text-sm">Business Type</label>
+                <div class="row">
+                  <div *ngFor="let control of stepTwoForm.get('business_type')?.controls; let i = index" class="col-3"
+                    formArrayName="business_type">
+                    <label for="{{ 'type-' + businessType[i].name }}"
+                      class="type-label border border-info-subtle w-100 p-2 rounded">
+                      <input type="checkbox" id="{{ 'type-' + businessType[i].name }}"
+                        [ng-true-value]="businessType[i].name" [formControlName]="i" class="d-none" />
+                      <span class="type-logo">
+                        <img [src]="businessType[i].uncheckedImg" class="type-unchecked" />
+                        <img [src]="businessType[i].checkedImg" class="type-checked" />
+                      </span>
+                      <span class="text-secondary text-sm ms-2">{{ businessType[i].name }}</span>
+                    </label>
+                  </div>
+                </div>
+                <div *ngIf="hasError('business_type')" class="text-danger text-xs text-end mt-1">Slect business type
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label text-secondary text-sm">Governorate</label>
+                <ng-select class="mb-3" [items]="[{id: 1, name: 'Cairo'}, {id: 2, name: 'Giza'}]" bindLabel="name"
+                  bindValue="id" formControlName="governorate" placeholder="Select Governorate">
+                </ng-select>
+                <div *ngIf="hasError('governorate')" class="text-danger text-xs text-end mt-1">Select a vailed
+                  governorate</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label text-secondary text-sm">District</label>
+                <ng-select class="mb-3"
+                  [items]="[{id: 1, name: 'Helwan'}, {id: 2, name: 'Nasr City'}, {id: 2, name: 'New Cairo'}]"
+                  bindLabel="name" bindValue="id" formControlName="district" placeholder="Select District">
+                </ng-select>
+                <div *ngIf="hasError('district')" class="text-danger text-xs text-end mt-1">Select a vailed district
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label text-secondary text-sm">How did you know us?</label>
+                <ng-select class="mb-3" [items]="PlaceList" bindValue="id" formControlName="place"
+                  placeholder="Select One">
+                  <ng-template ng-label-tmp let-item="item">
+                    <div class="text-secondary">
+                      <i class="me-2" [ngClass]="item.icon"></i>
+                      <span>{{ item.name }}</span>
+                    </div>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <div class="text-secondary">
+                      <i class="me-2" [ngClass]="item.icon"></i>
+                      <span>{{ item.name }}</span>
+                    </div>
+                  </ng-template>
+                </ng-select>
+                <div *ngIf="hasError('place')" class="text-danger text-xs text-end mt-1">Select a vailed value</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="where_know" class="form-label text-secondary text-sm">
+                  Are you currently using system ?
+                  <i class="far fa-question-circle"></i>
+                </label>
+                <div class="mb-3">
+                  <input type="radio" value="yes" name="using_system" id="using-system-yes"
+                    formControlName="using_system" />
+                  <label for="using-system-yes" class="ps-3 me-4 text-secondary text-sm">Yes</label>
+                  <input type="radio" value="no" name="using_system" id="using-system-no"
+                    formControlName="using_system" />
+                  <label for="using-system-no" class="ps-3 me-4 text-secondary text-sm">No</label>
+                </div>
+                <div *ngIf="hasError('using_system')" class="text-danger text-xs text-end mt-1">Select a vailed value
+                </div>
+              </div>
+            </div>
+            <div class="offset-md-7 col-md-5 text-end">
+              <div class="d-grid" style="min-height: 100%;">
+                <button type="submit" class="btn btn-primary block mb-3">
+                  <span class="float-start">CREATE ACCOUNT</span>
+                  <span class="ms-2 float-end">
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

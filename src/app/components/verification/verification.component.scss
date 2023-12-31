@@ -1,0 +1,19 @@
+.verification-bg {
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 10;
+
+  .verification-container {
+    width: 460px;
+
+    .img {
+      width: 120px;
+      height: 120px;
+    }
+
+    .close-btn:hover {
+      color: red;
+      cursor: pointer;
+    }
+
+  }
+}
